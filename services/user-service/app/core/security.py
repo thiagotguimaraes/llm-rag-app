@@ -3,7 +3,10 @@ from datetime import datetime, timedelta
 from fastapi import Depends, HTTPException, status
 from fastapi.security import OAuth2PasswordBearer
 from jose import JWTError, jwt
-from app.models.user import fake_users_db
+from sqlalchemy.ext.asyncio import AsyncSession
+from app.db.session import get_db
+from app.db.models.user import User
+from sqlalchemy.future import select
 
 SECRET_KEY = "super-secret-key"  # TODO: Use env/Key Vault
 ALGORITHM = "HS256"
@@ -24,7 +27,10 @@ def create_access_token(data: dict, expires_delta: timedelta = None):
     to_encode.update({"exp": expire})
     return jwt.encode(to_encode, SECRET_KEY, algorithm=ALGORITHM)
 
-def get_current_user(token: str = Depends(oauth2_scheme)):
+async def get_current_user(
+    token: str = Depends(oauth2_scheme),
+    db: AsyncSession = Depends(get_db)
+):
     credentials_exception = HTTPException(
         status_code=status.HTTP_401_UNAUTHORIZED,
         detail="Invalid authentication credentials",
@@ -38,14 +44,15 @@ def get_current_user(token: str = Depends(oauth2_scheme)):
     except JWTError:
         raise credentials_exception
 
-    user = fake_users_db.get(email)
-    if not user:
+    result = await db.execute(select(User).where(User.email == email))
+    user = result.scalars().first()
+    if user is None or not user.is_active:
         raise credentials_exception
 
     return user
 
 def require_role(required_role: str):
-    def role_checker(user = Depends(get_current_user)):
+    async def role_checker(user: User = Depends(get_current_user)):
         if user.role != required_role:
             raise HTTPException(status_code=403, detail="Forbidden: insufficient role")
         return user
