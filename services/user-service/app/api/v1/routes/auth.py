@@ -20,4 +20,5 @@ def register(user_in: UserRegisterRequest):
         "sub": user.email,
         "role": user.role
     })
+    
     return TokenResponse(access_token=token)
