@@ -1,9 +1,23 @@
 version: "3.9"
 
 services:
-  rag-api:
+  rag-service:
     build: .
-    ports:
-      - "8001:8000"
+    command: uvicorn app.main:app --host 0.0.0.0 --port 8001 --reload
     volumes:
-      - ./app:/app
+      - .:/app
+    environment:
+      PYTHONPATH: "/app"
+    depends_on:
+      - redis
+
+  redis:
+    image: redis:7
+
+  worker:
+    build: .
+    command: celery -A app.worker.celery_app worker --loglevel=info
+    depends_on:
+      - redis
+    volumes:
+      - .:/app

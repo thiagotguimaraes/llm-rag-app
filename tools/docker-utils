@@ -13,3 +13,13 @@ docker exec -it user-service_user-db_1 bash
 
 ### Run postgress in terminal
 psql -h localhost -U postgres -d user_service
+
+
+
+
+
+### Start redis and worker and keep them running
+docker-compose up -d --build redis worker
+
+### Start rag-service only after redis and worker are running
+docker-compose up --build rag-service
