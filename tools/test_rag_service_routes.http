@@ -4,11 +4,19 @@ GET http://localhost:8001/api/v1/health
 ###
 POST http://localhost:8001/api/v1/upload/ingest
 Content-Type: application/json
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI0MDk2NTM3ZC1jODdkLTRmODItYjg0Ny1kNzcxNWYzOWY4OWYiLCJlbWFpbCI6InVzZXIyMUBleGFtcGxlLmNvbSIsInJvbGUiOiJ1c2VyIiwiZXhwIjoxNzQ0NDY1Nzk4fQ.crRcYDx7d_ckjMjt8hDsgqnfN89GsX4VdEExAUEmuH8
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI0MDk2NTM3ZC1jODdkLTRmODItYjg0Ny1kNzcxNWYzOWY4OWYiLCJlbWFpbCI6InVzZXIyMUBleGFtcGxlLmNvbSIsInJvbGUiOiJ1c2VyIiwiZXhwIjoxNzQ0NDgxMzg5fQ.A2hVViBjxKs05rIT484hqr8isMGYcIoQyeX124jIOdE
 
-{"texts": ["This is a document about RAG", "This one is about embeddings."]}
+{"texts": ["CHAPTER I. Down the Rabbit-Hole", "CHAPTER II. The Pool of Tears", "CHAPTER III. A Caucus-Race and a Long Tale", "CHAPTER IV. The Rabbit Sends in a Little Bill", "CHAPTER V. Advice from a Caterpillar", "CHAPTER VI. Pig and Pepper", "CHAPTER VII. A Mad Tea-Party", "CHAPTER VIII. The Queen’s Croquet-Ground", "CHAPTER IX. The Mock Turtle’s Story", "CHAPTER X. The Lobster Quadrille", "CHAPTER XI. Who Stole the Tarts?", "CHAPTER XII. Alice’s Evidence"]}
 
 
 ###
 GET http://localhost:8001/api/v1/search?query=quick fox
+
+
+###
+POST http://localhost:8001/api/v1/rag/ask
+Content-Type: application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI0MDk2NTM3ZC1jODdkLTRmODItYjg0Ny1kNzcxNWYzOWY4OWYiLCJlbWFpbCI6InVzZXIyMUBleGFtcGxlLmNvbSIsInJvbGUiOiJ1c2VyIiwiZXhwIjoxNzQ0NDgxMzg5fQ.A2hVViBjxKs05rIT484hqr8isMGYcIoQyeX124jIOdE
+
+{"question": "What is The Pool of Tears chapter?"}
 

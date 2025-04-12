@@ -7,6 +7,5 @@ embedder = EmbeddingService()
 @celery_app.task
 def generate_embeddings_task(texts: list[str], user_id: str) -> str:
     vectors = embedder.embed(texts)
-    collection_name = f"user_{user_id}_documents"
-    store_embeddings(vectors, texts, collection_name)
+    store_embeddings(vectors, texts, user_id)
     return f"{len(texts)} documents stored for user {user_id}."
