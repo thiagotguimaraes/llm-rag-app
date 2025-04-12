@@ -4,3 +4,4 @@ celery[redis]
 qdrant-client
 python-jose==3.4.0
 sentence_transformers
+openai

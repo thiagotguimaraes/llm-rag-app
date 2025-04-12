@@ -16,7 +16,7 @@ GET http://localhost:8001/api/v1/search?query=quick fox
 ###
 POST http://localhost:8001/api/v1/rag/ask
 Content-Type: application/json
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI0MDk2NTM3ZC1jODdkLTRmODItYjg0Ny1kNzcxNWYzOWY4OWYiLCJlbWFpbCI6InVzZXIyMUBleGFtcGxlLmNvbSIsInJvbGUiOiJ1c2VyIiwiZXhwIjoxNzQ0NDgxMzg5fQ.A2hVViBjxKs05rIT484hqr8isMGYcIoQyeX124jIOdE
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI0MDk2NTM3ZC1jODdkLTRmODItYjg0Ny1kNzcxNWYzOWY4OWYiLCJlbWFpbCI6InVzZXIyMUBleGFtcGxlLmNvbSIsInJvbGUiOiJ1c2VyIiwiZXhwIjoxNzQ0NDg2NjQ5fQ.jl3ONP2wtVhDwqpQTvTWGIngMNJ-OuSw4L6fItsyqco
 
 {"question": "What is The Pool of Tears chapter?"}
 

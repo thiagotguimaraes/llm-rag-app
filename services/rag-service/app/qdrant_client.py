@@ -38,7 +38,7 @@ def store_embeddings(embeddings: list[list[float]], texts: list[str], user_id: s
 
     qdrant.upsert(collection_name=collection_name, points=points)
 
-def search_documents(embedded_question: list[list[float]], user_id: str, top_k: int = 5) -> List[dict]:
+def search_documents(embedded_question: list[list[float]], user_id: str, top_k: int = 1) -> List[dict]:
     collection_name = get_collection_name(user_id)
     
     if collection_name not in [c.name for c in qdrant.get_collections().collections]:
