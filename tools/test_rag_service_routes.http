@@ -7,3 +7,7 @@ Content-Type: application/json
 
 {"text": "The quick brown fox jumps over the lazy dog."}
 
+
+###
+GET http://localhost:8001/api/v1/search?query=quick fox
+
