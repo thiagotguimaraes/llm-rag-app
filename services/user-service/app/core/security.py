@@ -26,7 +26,12 @@ def hash_password(password: str) -> str:
 def verify_password(plain_password: str, hashed_password: str) -> bool:
     return pwd_context.verify(plain_password, hashed_password)
 
-def create_access_token(data: dict, expires_delta: timedelta = None):
+def create_access_token(user: User, expires_delta: timedelta = None):
+    data = {
+        "sub": str(user.id),
+        "email": user.email,
+        "role": user.role
+    }
     to_encode = data.copy()
     expire = datetime.utcnow() + (expires_delta or timedelta(minutes=JWT_ACCESS_TOKEN_EXPIRE_MINUTES))
     to_encode.update({"exp": expire})
@@ -43,13 +48,13 @@ async def get_current_user(
     )
     try:
         payload = jwt.decode(token, JWT_SECRET_KEY, algorithms=[JWT_ALGORITHM])
-        email: str = payload.get("sub")
-        if email is None:
+        id: str = payload.get("sub")
+        if id is None:
             raise credentials_exception
     except JWTError:
         raise credentials_exception
 
-    result = await db.execute(select(User).where(User.email == email))
+    result = await db.execute(select(User).where(User.id == id))
     user = result.scalars().first()
     if user is None or not user.is_active:
         raise credentials_exception

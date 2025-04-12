@@ -25,11 +25,9 @@ async def register(user_in: UserAuthRequest, db: AsyncSession = Depends(get_db))
     )
     db.add(new_user)
     await db.commit()
+    await db.refresh(new_user)
 
-    token = create_access_token({
-        "sub": new_user.email,
-        "role": new_user.role,
-    })
+    token = create_access_token(new_user)
 
     return TokenResponse(access_token=token)
 
@@ -42,10 +40,7 @@ async def login(user_in: UserAuthRequest, db: AsyncSession = Depends(get_db)):
     if not user or not verify_password(user_in.password, user.hashed_password):
         raise HTTPException(status_code=401, detail="Invalid email or password")
 
-    token = create_access_token({
-        "sub": user.email,
-        "role": user.role
-    })
+    token = create_access_token(user)
 
     return TokenResponse(access_token=token)
 

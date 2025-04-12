@@ -4,6 +4,7 @@ GET http://localhost:8001/api/v1/health
 ###
 POST http://localhost:8001/api/v1/upload/ingest
 Content-Type: application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI0MDk2NTM3ZC1jODdkLTRmODItYjg0Ny1kNzcxNWYzOWY4OWYiLCJlbWFpbCI6InVzZXIyMUBleGFtcGxlLmNvbSIsInJvbGUiOiJ1c2VyIiwiZXhwIjoxNzQ0NDY1Nzk4fQ.crRcYDx7d_ckjMjt8hDsgqnfN89GsX4VdEExAUEmuH8
 
 {"texts": ["This is a document about RAG", "This one is about embeddings."]}
 

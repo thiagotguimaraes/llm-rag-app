@@ -10,20 +10,17 @@ logger = logging.getLogger(__name__)
 
 QDRANT_PORT = int(os.getenv("QDRANT_PORT"))
 
-qdrant = QdrantClient(host="qdrant", port=QDRANT_PORT)
-COLLECTION_NAME = "documents"
-    
+qdrant = QdrantClient(host="qdrant", port=QDRANT_PORT)    
 
-def create_collection():
-    if COLLECTION_NAME not in [c.name for c in qdrant.get_collections().collections]:
+def create_collection(collection_name: str):
+    if collection_name not in [c.name for c in qdrant.get_collections().collections]:
         qdrant.recreate_collection(
-            collection_name=COLLECTION_NAME,
+            collection_name=collection_name,
             vectors_config=VectorParams(size=384, distance=Distance.COSINE),
         )
     
-    
-def store_embeddings(embeddings: list[list[float]], texts: list[str]):
-    create_collection()
+def store_embeddings(embeddings: list[list[float]], texts: list[str], collection_name: str):
+    create_collection(collection_name)
 
     points = [
         PointStruct(
@@ -34,4 +31,4 @@ def store_embeddings(embeddings: list[list[float]], texts: list[str]):
         for embedding, text in zip(embeddings, texts)
     ]
 
-    qdrant.upsert(collection_name=COLLECTION_NAME, points=points)
+    qdrant.upsert(collection_name=collection_name, points=points)

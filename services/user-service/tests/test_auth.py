@@ -3,7 +3,7 @@ from httpx import AsyncClient
 from unittest.mock import AsyncMock, patch
 from app.schemas.user import UserAuthRequest
 from app.db.models.user import User
-from app.core.security import hash_password, create_access_token
+from app.core.security import hash_password
 
 @pytest.mark.asyncio
 @patch("app.api.v1.routes.auth.get_db")

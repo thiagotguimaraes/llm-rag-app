@@ -3,7 +3,7 @@ POST http://localhost:8000/api/v1/auth/register
 Content-Type: application/json
 
 {
-  "email": "user2@example.com",
+  "email": "user21@example.com",
   "password": "123456"
 }
 
@@ -31,7 +31,7 @@ POST http://localhost:8000/api/v1/auth/login
 Content-Type: application/json
 
 {
-  "email": "admin@example.com",
+  "email": "user21@example.com",
   "password": "123456"
 }
 
@@ -46,8 +46,8 @@ Content-Type: application/json
 
 ###
 GET http://localhost:8000/api/v1/protected/me
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJhZG1pbkBleGFtcGxlLmNvbSIsInJvbGUiOiJ1c2VyIiwiZXhwIjoxNzQ0MzE1MzY0fQ.5bdQjNI3hM4jljgDk9pzs0PsZOqFhHRlkzZ6hBn5gwM
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI0MDk2NTM3ZC1jODdkLTRmODItYjg0Ny1kNzcxNWYzOWY4OWYiLCJlbWFpbCI6InVzZXIyMUBleGFtcGxlLmNvbSIsInJvbGUiOiJ1c2VyIiwiZXhwIjoxNzQ0NDY1Nzk4fQ.crRcYDx7d_ckjMjt8hDsgqnfN89GsX4VdEExAUEmuH8
 
 ###
 GET http://localhost:8000/api/v1/protected/admin-only
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJhZG1pbkBleGFtcGxlLmNvbSIsInJvbGUiOiJ1c2VyIiwiZXhwIjoxNzQ0MzE1MzY0fQ.5bdQjNI3hM4jljgDk9pzs0PsZOqFhHRlkzZ6hBn5gwM
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI0MDk2NTM3ZC1jODdkLTRmODItYjg0Ny1kNzcxNWYzOWY4OWYiLCJlbWFpbCI6InVzZXIyMUBleGFtcGxlLmNvbSIsInJvbGUiOiJ1c2VyIiwiZXhwIjoxNzQ0NDY1Nzk4fQ.crRcYDx7d_ckjMjt8hDsgqnfN89GsX4VdEExAUEmuH8
