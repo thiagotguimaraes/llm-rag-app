@@ -2,6 +2,8 @@ version: "3.9"
 
 services:
   rag-service:
+    env_file:
+      - .env
     build: .
     command: uvicorn app.main:app --host 0.0.0.0 --port ${SERVER_PORT} --reload
     ports:
@@ -16,9 +18,11 @@ services:
   redis:
     image: redis:7
 
-  worker:
+  celery-worker:
     build: .
-    command: celery -A app.worker.celery_app worker --loglevel=info
+    env_file:
+      - .env
+    command: celery -A app.worker.celery_app worker --loglevel=INFO
     depends_on:
       - redis
     volumes:
@@ -26,6 +30,8 @@ services:
 
   qdrant:
     image: qdrant/qdrant
+    env_file:
+      - .env
     ports:
       - "${QDRANT_PORT}:${QDRANT_PORT}"
     volumes:

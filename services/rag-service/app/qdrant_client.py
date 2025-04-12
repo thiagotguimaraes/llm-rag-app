@@ -1,7 +1,12 @@
 from qdrant_client import QdrantClient
 from qdrant_client.http.models import Distance, VectorParams
+from dotenv import load_dotenv
+import os
+load_dotenv()
 
-qdrant = QdrantClient(host="qdrant", port=6333)  # Docker service name
+QDRANT_PORT = int(os.getenv("QDRANT_PORT"))
+
+qdrant = QdrantClient(host="qdrant", port=QDRANT_PORT)
 
 def init_qdrant():
     collection_name = "test-collection"
