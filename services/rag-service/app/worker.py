@@ -11,9 +11,6 @@ celery_app = Celery(
     backend=f"redis://redis:{REDIS_PORT}/0",
 )
 
-celery_app.autodiscover_tasks(["app.tasks.add", "app.tasks.embed"])
+celery_app.autodiscover_tasks(["app.tasks.add", "app.tasks.embed", "app.tasks.embedding"], force=True)
 
-celery_app.conf.task_routes = {
-    "app.tasks.add.add": {"queue": "default"},
-    "app.tasks.embed.embed_and_store_document": {"queue": "default"}
-    }
+celery_app.conf.task_default_queue = "default"

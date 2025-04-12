@@ -1,13 +1,17 @@
-from fastapi import APIRouter, status
+from fastapi import APIRouter
 from pydantic import BaseModel
-from app.tasks.embed import embed_and_store_document
+from typing import List
+from app.tasks.embedding import generate_embeddings_task
 
 router = APIRouter()
 
-class DocumentInput(BaseModel):
-    text: str
+class DocumentRequest(BaseModel):
+    texts: List[str]
 
-@router.post("/ingest", status_code=status.HTTP_202_ACCEPTED)
-async def ingest_document(doc: DocumentInput):
-    task = embed_and_store_document.delay(doc.text)
-    return {"task_id": task.id}
+class TaskResponse(BaseModel):
+    task_id: str
+
+@router.post("/ingest", response_model=TaskResponse)
+async def ingest_documents(payload: DocumentRequest):
+    task = generate_embeddings_task.delay(payload.texts)
+    return TaskResponse(task_id=task.id)

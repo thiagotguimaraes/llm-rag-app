@@ -2,3 +2,4 @@ fastapi
 uvicorn[standard]
 celery[redis]
 qdrant-client
+sentence_transformers

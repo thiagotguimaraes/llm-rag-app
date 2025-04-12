@@ -5,7 +5,7 @@ GET http://localhost:8001/api/v1/health
 POST http://localhost:8001/api/v1/upload/ingest
 Content-Type: application/json
 
-{"text": "The quick brown fox jumps over the lazy dog."}
+{"texts": ["This is a document about RAG", "This one is about embeddings."]}
 
 
 ###
