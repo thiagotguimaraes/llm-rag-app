@@ -6,6 +6,8 @@ services:
     image: postgres:15
     ports:
       - "${DATABASE_PORT}:${DATABASE_PORT}"
+    environment:
+    - PGPORT=${DATABASE_PORT}
     volumes:
       - user_db_data:/var/lib/postgresql/data
 

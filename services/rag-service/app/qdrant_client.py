@@ -31,7 +31,7 @@ def store_embeddings(embeddings: list[list[float]], texts: list[str], user_id: s
         PointStruct(
             id=str(uuid.uuid4()),
             vector=embedding,
-            payload={"text": text}
+            payload={"text": text},
         )
         for embedding, text in zip(embeddings, texts)
     ]

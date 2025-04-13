@@ -13,7 +13,10 @@ services:
     environment:
       PYTHONPATH: "/app"
     depends_on:
+      - rag-db
+      - qdrant
       - redis
+      - celery-worker
 
   redis:
     image: redis:7
@@ -37,5 +40,17 @@ services:
     volumes:
       - qdrant_data:/qdrant/storage
 
+  rag-db:
+    env_file:
+      - .env
+    image: postgres:15
+    ports:
+      - "${DATABASE_PORT}:${DATABASE_PORT}"
+    environment:
+    - PGPORT=${DATABASE_PORT}
+    volumes:
+      - rag_db_data:/var/lib/postgresql/data
+
 volumes:
   qdrant_data:
+  rag_db_data:

@@ -27,7 +27,7 @@ def generate_answer(question: str, context_chunks: list[str]) -> str:
     context_text = "\n\n".join(context_chunks)
 
     messages = [
-        {"role": "system", "content": "You are a helpful assistant. Use the provided context to answer the question. Reaply using only the context provided."},
+        {"role": "system", "content": "You are a helpful assistant. Use the provided context to answer the question. Reply using only the context provided."},
         {"role": "user", "content": f"Context:\n{context_text}"},
         {"role": "user", "content": f"Question: {question}"}
     ]

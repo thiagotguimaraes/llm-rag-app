@@ -6,7 +6,7 @@ from app.db.models.user import User
 from app.core.security import hash_password
 
 @pytest.mark.asyncio
-@patch("app.api.v1.routes.auth.get_db")
+@patch("app.api.v1.routes.auth.get_async_session")
 async def test_register_user_success(mock_get_db, test_app):
     mock_db = AsyncMock()
     mock_get_db.return_value = mock_db
@@ -24,7 +24,7 @@ async def test_register_user_success(mock_get_db, test_app):
     mock_db.add.assert_called_once()
 
 @pytest.mark.asyncio
-@patch("app.api.v1.routes.auth.get_db")
+@patch("app.api.v1.routes.auth.get_async_session")
 async def test_register_user_already_exists(mock_get_db, test_app):
     mock_db = AsyncMock()
     mock_get_db.return_value = mock_db
@@ -42,7 +42,7 @@ async def test_register_user_already_exists(mock_get_db, test_app):
     assert response.json()["detail"] == "User already exists"
 
 @pytest.mark.asyncio
-@patch("app.api.v1.routes.auth.get_db")
+@patch("app.api.v1.routes.auth.get_async_session")
 async def test_login_user_success(mock_get_db, test_app):
     mock_db = AsyncMock()
     mock_get_db.return_value = mock_db
@@ -61,7 +61,7 @@ async def test_login_user_success(mock_get_db, test_app):
     assert "access_token" in response.json()
 
 @pytest.mark.asyncio
-@patch("app.api.v1.routes.auth.get_db")
+@patch("app.api.v1.routes.auth.get_async_session")
 async def test_login_user_invalid_credentials(mock_get_db, test_app):
     mock_db = AsyncMock()
     mock_get_db.return_value = mock_db

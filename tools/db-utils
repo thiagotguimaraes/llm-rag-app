@@ -1,3 +1,15 @@
+
+# ### Install postgres
+# sudo apt update
+# sudo apt install postgresql postgresql-contrib
+
+# ### Enable postgres service
+# sudo systemctl enable postgresql
+# sudo systemctl services postgresql
+# sudo systemctl status postgresql
+
+
+
 ### Create the database and admin user
 sudo -u postgres psql <<EOF
 DROP DATABASE $DB_NAME;

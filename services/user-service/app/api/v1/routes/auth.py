@@ -5,13 +5,13 @@ from sqlalchemy.future import select
 from app.schemas.user import UserAuthRequest, TokenResponse
 from app.db.models.user import User
 from app.core.security import hash_password, create_access_token
-from app.db.session import get_db
+from app.db.session import get_async_session
 from app.core.security import verify_password
 
 router = APIRouter()
 
 @router.post("/register", response_model=TokenResponse)
-async def register(user_in: UserAuthRequest, db: AsyncSession = Depends(get_db)):
+async def register(user_in: UserAuthRequest, db: AsyncSession = Depends(get_async_session)):
     # Check if user exists
     result = await db.execute(select(User).where(User.email == user_in.email))
     existing_user = result.scalars().first()
@@ -33,7 +33,7 @@ async def register(user_in: UserAuthRequest, db: AsyncSession = Depends(get_db))
 
 
 @router.post("/login", response_model=TokenResponse)
-async def login(user_in: UserAuthRequest, db: AsyncSession = Depends(get_db)):
+async def login(user_in: UserAuthRequest, db: AsyncSession = Depends(get_async_session)):
     result = await db.execute(select(User).where(User.email == user_in.email))
     user = result.scalars().first()
 

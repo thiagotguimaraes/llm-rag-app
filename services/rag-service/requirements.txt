@@ -3,5 +3,9 @@ uvicorn[standard]
 celery[redis]
 qdrant-client
 python-jose==3.4.0
-sentence_transformers
+python-multipart
 openai
+pdfminer.six
+sqlalchemy
+asyncpg
+sentence_transformers

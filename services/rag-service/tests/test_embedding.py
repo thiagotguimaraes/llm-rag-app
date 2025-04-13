@@ -1,4 +1,4 @@
-from app.embedding.service import EmbeddingService
+from app.services.embedding import EmbeddingService
 
 def test_embed_sentence():
     embedder = EmbeddingService()

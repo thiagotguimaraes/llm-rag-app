@@ -4,7 +4,7 @@ from pydantic import BaseModel
 from typing import List
 from app.qdrant_client import search_documents
 from app.api.auth import get_current_user_id
-from app.embedding.service import embedding_service
+from app.services.embedding import embedding_service
 from app.llm.openai_client import generate_answer
 
 logger = logging.getLogger(__name__)

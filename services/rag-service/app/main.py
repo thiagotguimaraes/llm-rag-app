@@ -1,7 +1,8 @@
 import logging
 from fastapi import FastAPI
-# from app.qdrant_client import init_qdrant
 from app.api.v1.routes import upload, health, search, rag
+from app.db.session import engine
+from app.db.base import Base
 from dotenv import load_dotenv
 import os
 load_dotenv()
@@ -15,12 +16,12 @@ logging.basicConfig(
 )
 logger = logging.getLogger(__name__)
 
-# async def lifespan(app: FastAPI):
-#     init_qdrant()
-#     yield
-#     logger.info("🛑 Application shutdown.")
+async def lifespan(app: FastAPI):
+    async with engine.begin() as conn:
+        await conn.run_sync(Base.metadata.create_all)
+    yield  # Lifespan continues after this point
 
-app = FastAPI(title="RAG Microservice") #, lifespan=lifespan)
+app = FastAPI(title="RAG Microservice", lifespan=lifespan)
 
 app.include_router(health.router, prefix="/api/v1/health")
 app.include_router(upload.router, prefix="/api/v1/upload")
