@@ -1,6 +1,6 @@
 # LLM-RAG-App 🚀
 
-LLM-RAG-App is a microservices-based application designed to provide a Retrieval-Augmented Generation (RAG) system. It integrates user authentication, document ingestion, embedding generation, and retrieval capabilities, leveraging FastAPI, Celery, Qdrant, and OpenAI's GPT-4 model.
+LLM-RAG-App is a multi-tenant, microservices-based platform designed to deliver a robust Retrieval-Augmented Generation (RAG) platform. Each user can operate their own personalized RAG service, leveraging specialized models tailored to their unique contexts. The platform seamlessly integrates user authentication, document ingestion, embedding generation, and retrieval capabilities. Built with cutting-edge technologies like FastAPI, Celery, Qdrant, and OpenAI's GPT-4 model, it ensures scalability, performance, and adaptability for diverse use cases.
 
 ## Features ✨
 
