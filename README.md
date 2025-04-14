@@ -53,6 +53,7 @@ The application is divided into two main services:
 - Python 3.11 🐍
 - PostgreSQL 🗄️
 - Redis 🔄
+- Celery 🛠️
 
 ### Steps 🛠️
 1. Clone the repository:
@@ -61,7 +62,7 @@ The application is divided into two main services:
     cd llm-rag-app
     ```
 2. Set up environment variables:
-    - Copy `.env.example` to `.env` and configure the variables.
+    - Configure the environment variables on a `.env` file per service.
 
 3. Start the services:
     ```bash
@@ -79,9 +80,6 @@ The application is divided into two main services:
 ### User Service 👤
 - **Register**: `POST /api/v1/auth/register`
 - **Login**: `POST /api/v1/auth/login`
-- **Protected Endpoints**:
-  - `GET /api/v1/protected/me`
-  - `GET /api/v1/protected/admin-only`
 
 ### RAG Service 📄🔍
 - **Health Check**: `GET /api/v1/health`
