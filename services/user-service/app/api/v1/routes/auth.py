@@ -4,17 +4,15 @@ from sqlalchemy.future import select
 
 from app.schemas.user import UserAuthRequest, TokenResponse
 from app.db.models.user import User
-from app.core.security import hash_password, create_access_token
+from app.core.security import hash_password, create_access_token, verify_password
 from app.db.session import get_async_session
-from app.core.security import verify_password
 
 router = APIRouter()
 
 @router.post("/register", response_model=TokenResponse)
 async def register(user_in: UserAuthRequest, db: AsyncSession = Depends(get_async_session)):
     # Check if user exists
-    result = await db.execute(select(User).where(User.email == user_in.email))
-    existing_user = result.scalars().first()
+    existing_user = (await db.execute(select(User).where(User.email == user_in.email))).scalars().first()
     if existing_user:
         raise HTTPException(status_code=400, detail="User already exists")
 
@@ -34,8 +32,7 @@ async def register(user_in: UserAuthRequest, db: AsyncSession = Depends(get_asyn
 
 @router.post("/login", response_model=TokenResponse)
 async def login(user_in: UserAuthRequest, db: AsyncSession = Depends(get_async_session)):
-    result = await db.execute(select(User).where(User.email == user_in.email))
-    user = result.scalars().first()
+    user = (await db.execute(select(User).where(User.email == user_in.email))).scalars().first()
 
     if not user or not verify_password(user_in.password, user.hashed_password):
         raise HTTPException(status_code=401, detail="Invalid email or password")
