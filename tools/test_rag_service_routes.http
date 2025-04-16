@@ -16,18 +16,13 @@ GET http://localhost:8001/api/v1/search?query=quick fox
 ###
 POST http://localhost:8001/api/v1/rag/ask
 Content-Type: application/json
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI0MDk2NTM3ZC1jODdkLTRmODItYjg0Ny1kNzcxNWYzOWY4OWYiLCJlbWFpbCI6InVzZXIyMUBleGFtcGxlLmNvbSIsInJvbGUiOiJ1c2VyIiwiZXhwIjoxNzQ0NTQ5MTU3fQ.nODZXvweXtHr2qtMlf9N6OF0B2EQGZU4NZ0XnF1JvgY
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI0MDk2NTM3ZC1jODdkLTRmODItYjg0Ny1kNzcxNWYzOWY4OWYiLCJlbWFpbCI6InVzZXIyMUBleGFtcGxlLmNvbSIsInJvbGUiOiJ1c2VyIiwiZXhwIjoxNzQ0Nzg1Nzc3fQ.KkS9jCTWz2EygkJ6aeuqdXC9-ARHHTgDLfswPYtMpNU
 
 {"question": "What is my wife?"}
 
 
 
-###
-POST http://localhost:8001/api/v1/upload/upload
-accept: application/json
-Content-Type: multipart/form-data
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI0MDk2NTM3ZC1jODdkLTRmODItYjg0Ny1kNzcxNWYzOWY4OWYiLCJlbWFpbCI6InVzZXIyMUBleGFtcGxlLmNvbSIsInJvbGUiOiJ1c2VyIiwiZXhwIjoxNzQ0NDg2NjQ5fQ.jl3ONP2wtVhDwqpQTvTWGIngMNJ-OuSw4L6fItsyqco
-
-{"file": "/home/thiago/dev/Resume202502270259.pdf", "type":"application/pdf"}
-
-
+curl -X POST http://localhost:8001/api/v1/upload/upload \
+-H "accept: application/json" \
+-H "Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI0MDk2NTM3ZC1jODdkLTRmODItYjg0Ny1kNzcxNWYzOWY4OWYiLCJlbWFpbCI6InVzZXIyMUBleGFtcGxlLmNvbSIsInJvbGUiOiJ1c2VyIiwiZXhwIjoxNzQ0Nzg1Nzc3fQ.KkS9jCTWz2EygkJ6aeuqdXC9-ARHHTgDLfswPYtMpNU" \
+-F "file=@/home/thiago/dev/Resume202502270259.pdf"

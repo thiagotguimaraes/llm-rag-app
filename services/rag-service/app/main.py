@@ -1,7 +1,7 @@
 import logging
 from fastapi import FastAPI
 from app.api.v1.routes import upload, health, search, rag
-from app.db.session import engine
+from app.db.session import async_engine
 from app.db.base import Base
 from dotenv import load_dotenv
 import os
@@ -17,7 +17,7 @@ logging.basicConfig(
 logger = logging.getLogger(__name__)
 
 async def lifespan(app: FastAPI):
-    async with engine.begin() as conn:
+    async with async_engine.begin() as conn:
         await conn.run_sync(Base.metadata.create_all)
     yield  # Lifespan continues after this point
 
