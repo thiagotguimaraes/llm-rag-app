@@ -6,4 +6,3 @@ def test_qdrant_health():
     port = os.getenv("QDRANT_PORT", "6333")
     response = requests.get(f"http://{host}:{port}/collections")
     assert response.status_code == 200
-    assert True
