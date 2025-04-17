@@ -3,10 +3,10 @@ name: User Service CI
 on:
   push:
     paths:
-      - 'user-service/**'
+      - 'services/user-service/**'
   pull_request:
     paths:
-      - 'user-service/**'
+      - 'services/user-service/**'
 
 jobs:
   test:
@@ -51,7 +51,7 @@ jobs:
 
       - name: Install dependencies
         run: |
-          cd user-service
+          cd services/user-service
           pip install --upgrade pip
           pip install -r requirements.txt
           pip install -r requirements-dev.txt
@@ -64,25 +64,25 @@ jobs:
 
       - name: Run code formatting check (black)
         run: |
-          cd user-service
+          cd services/user-service
           black . --check
 
       - name: Run import sorting check (isort)
         run: |
-          cd user-service
+          cd services/user-service
           isort . --check-only
 
       - name: Run linting (flake8)
         run: |
-          cd user-service
+          cd services/user-service
           flake8 .
 
       - name: Run type checking (mypy)
         run: |
-          cd user-service
+          cd services/user-service
           mypy .
 
       - name: Run tests with coverage
         run: |
-          cd user-service
+          cd services/user-service
           pytest --cov=. --cov-report=term-missing
