@@ -26,16 +26,6 @@ jobs:
           --health-interval=10s
           --health-timeout=5s
           --health-retries=5
-      
-      qdrant:
-        image: qdrant/qdrant
-        ports:
-          - 6333:6333
-        options: >-
-          --health-cmd="wget --spider http://localhost:6333/collections || exit 1"
-          --health-interval=10s
-          --health-timeout=5s
-          --health-retries=5
 
     env:
       DATABASE_URL: postgresql://test_user:test_pass@localhost:5432/test_db
@@ -59,8 +49,6 @@ jobs:
       - name: Set environment variables
         run: |
           echo "DATABASE_URL=postgresql://test_user:test_pass@localhost:5432/test_db" >> $GITHUB_ENV
-          echo "QDRANT_HOST=localhost" >> $GITHUB_ENV
-          echo "QDRANT_PORT=6333" >> $GITHUB_ENV
 
       - name: Run code formatting check (black)
         run: |
