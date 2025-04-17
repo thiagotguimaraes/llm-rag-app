@@ -1,7 +1,8 @@
-from sqlalchemy import Column, String, Enum, DateTime
-from app.db.base import Base
-import enum
 import datetime
+import enum
+
+from app.db.base import Base
+from sqlalchemy import Column, DateTime, Enum, String
 
 
 class DocumentStatus(str, enum.Enum):
@@ -9,6 +10,7 @@ class DocumentStatus(str, enum.Enum):
     processing = "processing"
     done = "done"
     failed = "failed"
+
 
 class Document(Base):
     __tablename__ = "documents"

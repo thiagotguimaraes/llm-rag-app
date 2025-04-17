@@ -1,9 +1,10 @@
+from datetime import datetime, timedelta
 from unittest.mock import AsyncMock, Mock, patch
+
 import pytest
+from app.db.models.user import User
 from fastapi import HTTPException
 from jose import jwt
-from datetime import timedelta, datetime
-from app.db.models.user import User
 
 
 # Required to mock create_async_engine
@@ -27,9 +28,7 @@ def mock_query_result(mock_user):
 @patch("app.core.security.JWT_SECRET_KEY", "mock_secret_key")
 @patch("app.core.security.JWT_ALGORITHM", "mock_algorithm")
 @patch("app.core.security.jwt.decode")
-async def test_get_current_user_success(
-    mock_jwt_decode, mock_get_async_session
-):
+async def test_get_current_user_success(mock_jwt_decode, mock_get_async_session):
     from app.core.security import get_current_user
 
     # Mock database session
@@ -37,9 +36,7 @@ async def test_get_current_user_success(
     mock_get_async_session.return_value = mock_db_session
 
     # Mock user in database
-    mock_user = User(
-        id=1, email="test@example.com", role="user", is_active=True
-    )
+    mock_user = User(id=1, email="test@example.com", role="user", is_active=True)
     mock_db_session.execute.return_value = mock_query_result(mock_user)
 
     # Call the function
@@ -57,9 +54,7 @@ async def test_get_current_user_success(
 @pytest.mark.asyncio
 @patch("app.core.security.get_async_session")
 @patch("app.core.security.jwt.decode")
-async def test_get_current_user_invalid_token(
-    mock_jwt_decode, mock_get_async_session
-):
+async def test_get_current_user_invalid_token(mock_jwt_decode, mock_get_async_session):
     from app.core.security import get_current_user
 
     # Mock JWT decode to raise an error

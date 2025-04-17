@@ -1,6 +1,6 @@
-from app.db.session import engine
-from app.api.v1.routes import health, auth, protected
+from app.api.v1.routes import auth, health, protected
 from app.db.base import Base
+from app.db.session import engine
 from fastapi import FastAPI
 
 

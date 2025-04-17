@@ -1,23 +1,21 @@
-from passlib.context import CryptContext
+import os
 from datetime import datetime, timedelta
+
+from app.db.models.user import User
+from app.db.session import get_async_session
+from dotenv import load_dotenv
 from fastapi import Depends, HTTPException, status
 from fastapi.security import OAuth2PasswordBearer
 from jose import JWTError, jwt
+from passlib.context import CryptContext
 from sqlalchemy.ext.asyncio import AsyncSession
-from app.db.session import get_async_session
-from app.db.models.user import User
 from sqlalchemy.future import select
-
-import os
-from dotenv import load_dotenv
 
 load_dotenv()
 
 JWT_SECRET_KEY = os.getenv("JWT_SECRET_KEY")
 JWT_ALGORITHM = os.getenv("JWT_ALGORITHM")
-JWT_ACCESS_TOKEN_EXPIRE_MINUTES = int(
-    os.getenv("JWT_ACCESS_TOKEN_EXPIRE_MINUTES", 15)
-)
+JWT_ACCESS_TOKEN_EXPIRE_MINUTES = int(os.getenv("JWT_ACCESS_TOKEN_EXPIRE_MINUTES", 15))
 
 pwd_context = CryptContext(schemes=["bcrypt"], deprecated="auto")
 oauth2_scheme = OAuth2PasswordBearer(
@@ -72,9 +70,7 @@ async def get_current_user(
 def require_role(required_role: str):
     async def role_checker(user: User = Depends(get_current_user)):
         if user.role != required_role:
-            raise HTTPException(
-                status_code=403, detail="Forbidden: insufficient role"
-            )
+            raise HTTPException(status_code=403, detail="Forbidden: insufficient role")
         return user
 
     return role_checker

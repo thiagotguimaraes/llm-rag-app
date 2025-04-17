@@ -1,4 +1,5 @@
 from unittest.mock import patch
+
 import pytest
 from fastapi import FastAPI
 
@@ -21,13 +22,6 @@ def test_main_app_endpoints():
     routes = [route.path for route in app.routes]
 
     # Assert that the expected endpoints are registered
-    assert (
-        len(list(filter(lambda x: x.startswith("/api/v1/health/"), routes))) > 0
-    )
-    assert (
-        len(list(filter(lambda x: x.startswith("/api/v1/auth/"), routes))) > 0
-    )
-    assert (
-        len(list(filter(lambda x: x.startswith("/api/v1/protected/"), routes)))
-        > 0
-    )
+    assert len(list(filter(lambda x: x.startswith("/api/v1/health/"), routes))) > 0
+    assert len(list(filter(lambda x: x.startswith("/api/v1/auth/"), routes))) > 0
+    assert len(list(filter(lambda x: x.startswith("/api/v1/protected/"), routes))) > 0

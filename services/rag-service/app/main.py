@@ -1,10 +1,12 @@
 import logging
-from fastapi import FastAPI
-from app.api.v1.routes import upload, health, search, rag
-from app.db.session import async_engine
-from app.db.base import Base
-from dotenv import load_dotenv
 import os
+
+from app.api.v1.routes import health, rag, search, upload
+from app.db.base import Base
+from app.db.session import async_engine
+from dotenv import load_dotenv
+from fastapi import FastAPI
+
 load_dotenv()
 
 LOGGER_LEVEL = os.getenv("LOGGER_LEVEL", "INFO").upper()
@@ -16,10 +18,12 @@ logging.basicConfig(
 )
 logger = logging.getLogger(__name__)
 
+
 async def lifespan(app: FastAPI):
     async with async_engine.begin() as conn:
         await conn.run_sync(Base.metadata.create_all)
     yield  # Lifespan continues after this point
+
 
 app = FastAPI(title="RAG Microservice", lifespan=lifespan)
 

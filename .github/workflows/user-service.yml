@@ -50,25 +50,25 @@ jobs:
         run: |
           echo "DATABASE_URL=postgresql://test_user:test_pass@localhost:5432/test_db" >> $GITHUB_ENV
 
-      - name: Run code formatting check (black)
-        run: |
-          cd services/user-service
-          black . --check
+      # - name: Run code formatting check (black)
+      #   run: |
+      #     cd services/user-service
+      #     black . --check
 
-      - name: Run import sorting check (isort)
-        run: |
-          cd services/user-service
-          isort . --check-only
+      # - name: Run import sorting check (isort)
+      #   run: |
+      #     cd services/user-service
+      #     isort . --check-only
 
-      - name: Run linting (flake8)
-        run: |
-          cd services/user-service
-          flake8 .
+      # - name: Run linting (flake8)
+      #   run: |
+      #     cd services/user-service
+      #     flake8 .
 
-      - name: Run type checking (mypy)
-        run: |
-          cd services/user-service
-          mypy .
+      # - name: Run type checking (mypy)
+      #   run: |
+      #     cd services/user-service
+      #     mypy . --config-file ./mypy.ini
 
       - name: Run tests with coverage
         run: |

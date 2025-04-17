@@ -1,15 +1,11 @@
-from fastapi import APIRouter, HTTPException, Depends
+from app.core.security import (create_access_token, hash_password,
+                               verify_password)
+from app.db.models.user import User
+from app.db.session import get_async_session
+from app.schemas.user import TokenResponse, UserAuthRequest
+from fastapi import APIRouter, Depends, HTTPException
 from sqlalchemy.ext.asyncio import AsyncSession
 from sqlalchemy.future import select
-
-from app.schemas.user import UserAuthRequest, TokenResponse
-from app.db.models.user import User
-from app.core.security import (
-    hash_password,
-    create_access_token,
-    verify_password,
-)
-from app.db.session import get_async_session
 
 router = APIRouter()
 

@@ -1,9 +1,9 @@
+import os
+
+from dotenv import load_dotenv
 from fastapi import Depends, HTTPException
 from fastapi.security import OAuth2PasswordBearer
-from jose import jwt, JWTError
-
-import os
-from dotenv import load_dotenv
+from jose import JWTError, jwt
 
 load_dotenv()
 
@@ -11,6 +11,7 @@ JWT_SECRET_KEY = os.getenv("JWT_SECRET_KEY")
 JWT_ALGORITHM = os.getenv("JWT_ALGORITHM")
 
 oauth2_scheme = OAuth2PasswordBearer(tokenUrl="token")
+
 
 def get_current_user_id(token: str = Depends(oauth2_scheme)) -> str:
     try:

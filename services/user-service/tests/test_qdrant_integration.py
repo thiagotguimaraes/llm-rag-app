@@ -1,5 +1,7 @@
-import requests
 import os
+
+import requests
+
 
 def test_qdrant_health():
     host = os.getenv("QDRANT_HOST", "localhost")
