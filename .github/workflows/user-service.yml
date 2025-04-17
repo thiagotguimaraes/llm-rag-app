@@ -1,0 +1,88 @@
+name: User Service CI
+
+on:
+  push:
+    paths:
+      - 'user-service/**'
+  pull_request:
+    paths:
+      - 'user-service/**'
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+
+    services:
+      postgres:
+        image: postgres:13
+        env:
+          POSTGRES_USER: test_user
+          POSTGRES_PASSWORD: test_pass
+          POSTGRES_DB: test_db
+        ports:
+          - 5432:5432
+        options: >-
+          --health-cmd="pg_isready -U test_user"
+          --health-interval=10s
+          --health-timeout=5s
+          --health-retries=5
+      
+      qdrant:
+        image: qdrant/qdrant
+        ports:
+          - 6333:6333
+        options: >-
+          --health-cmd="wget --spider http://localhost:6333/collections || exit 1"
+          --health-interval=10s
+          --health-timeout=5s
+          --health-retries=5
+
+    env:
+      DATABASE_URL: postgresql://test_user:test_pass@localhost:5432/test_db
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      - name: Set up Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: '3.11'
+
+      - name: Install dependencies
+        run: |
+          cd user-service
+          pip install --upgrade pip
+          pip install -r requirements.txt
+          pip install -r requirements-dev.txt
+
+      - name: Set environment variables
+        run: |
+          echo "DATABASE_URL=postgresql://test_user:test_pass@localhost:5432/test_db" >> $GITHUB_ENV
+          echo "QDRANT_HOST=localhost" >> $GITHUB_ENV
+          echo "QDRANT_PORT=6333" >> $GITHUB_ENV
+
+      - name: Run code formatting check (black)
+        run: |
+          cd user-service
+          black . --check
+
+      - name: Run import sorting check (isort)
+        run: |
+          cd user-service
+          isort . --check-only
+
+      - name: Run linting (flake8)
+        run: |
+          cd user-service
+          flake8 .
+
+      - name: Run type checking (mypy)
+        run: |
+          cd user-service
+          mypy .
+
+      - name: Run tests with coverage
+        run: |
+          cd user-service
+          pytest --cov=. --cov-report=term-missing
