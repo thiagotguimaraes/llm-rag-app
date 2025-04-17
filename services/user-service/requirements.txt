@@ -38,3 +38,4 @@ websockets==15.0.1
 httpx
 pytest
 pytest-asyncio
+pytest-cov

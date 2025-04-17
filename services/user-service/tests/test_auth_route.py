@@ -5,7 +5,7 @@ from fastapi import HTTPException, FastAPI
 from app.schemas.user import UserAuthRequest
 from app.db.models.user import User
 
-# Required to mock create_async_engine and don't deal with DATABASE_URL env variable
+# Required to mock create_async_engine
 @pytest.fixture(autouse=True)
 def mock_create_async_engine():
     with patch("sqlalchemy.ext.asyncio.create_async_engine") as mock_engine:
