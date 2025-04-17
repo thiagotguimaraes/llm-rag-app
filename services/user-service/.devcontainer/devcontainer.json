@@ -1,0 +1,38 @@
+{
+    "name": "User Service Dev Container",
+    "dockerComposeFile": ["../docker-compose.yml"],
+    "service": "user-service",
+    "workspaceFolder": "/app",
+    "customizations": {
+      "vscode": {
+        "settings": {
+          "python.pythonPath": "/usr/local/bin/python",
+          "editor.formatOnSave": true,
+          "python.formatting.provider": "black",
+          "python.linting.enabled": true,
+          "python.linting.flake8Enabled": true,
+          "python.linting.mypyEnabled": true,
+          "python.linting.flake8Path": "flake8",
+          "python.linting.mypyPath": "mypy",
+          "python.sortImports.path": "isort",
+          "editor.codeActionsOnSave": {
+            "source.organizeImports": "always"
+          },
+          "flake8.args": ["--max-line-length=80"]
+        },
+        "extensions": [
+            "ms-python.python",
+            "ms-python.vscode-pylance",
+            "ms-azuretools.vscode-docker",
+            "esbenp.prettier-vscode",
+            "ms-vscode-remote.remote-containers",
+            "ms-python.black-formatter",
+            "ms-python.flake8"
+        ]
+      }
+    },
+    "postCreateCommand": "pip install --no-cache-dir -r requirements.txt && pip install --no-cache-dir -r requirements-dev.txt",
+    "remoteEnv": {
+      "PYTHONPATH": "/app"
+    }
+}

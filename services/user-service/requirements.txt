@@ -39,7 +39,3 @@ httpx
 pytest
 pytest-asyncio
 pytest-cov
-black 
-isort 
-flake8 
-mypy
