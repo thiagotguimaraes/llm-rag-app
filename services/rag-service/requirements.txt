@@ -9,3 +9,8 @@ pdfminer.six
 sqlalchemy
 asyncpg
 sentence_transformers
+httpx
+pytest
+pytest-asyncio
+pytest-cov
+psycopg2-binary

@@ -1,3 +1,4 @@
+from contextlib import contextmanager
 from sqlalchemy.ext.asyncio import AsyncSession, create_async_engine
 from sqlalchemy.orm import sessionmaker
 import os
@@ -7,13 +8,19 @@ from sqlalchemy.orm import sessionmaker as sync_sessionmaker
 
 load_dotenv()
 DATABASE_URL = os.getenv("DATABASE_URL")
+SYNC_DATABASE_URL = os.getenv("SYNC_DATABASE_URL")
 
-sync_engine = create_engine(DATABASE_URL, echo=True)
-sync_session = sync_sessionmaker(bind=sync_engine)
+sync_engine = create_engine(SYNC_DATABASE_URL, echo=True)
+sync_session = sync_sessionmaker(autocommit=False, autoflush=False, bind=sync_engine)
 
+@contextmanager
 def get_sync_session():
-    with sync_session() as session:
+    """Provide a transactional scope around a series of operations."""
+    session = sync_session()
+    try:
         yield session
+    finally:
+        session.close()
         
         
 async_engine = create_async_engine(DATABASE_URL, echo=True)

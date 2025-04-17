@@ -9,7 +9,7 @@ load_dotenv()
 
 logger = logging.getLogger(__name__)
 
-QDRANT_PORT = int(os.getenv("QDRANT_PORT"))
+QDRANT_PORT = int(os.getenv("QDRANT_PORT", 6333))
 
 qdrant = QdrantClient(host="qdrant", port=QDRANT_PORT)
 

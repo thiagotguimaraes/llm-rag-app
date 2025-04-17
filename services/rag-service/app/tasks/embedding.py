@@ -3,9 +3,9 @@ from app.worker import celery_app
 from app.services.embedding import EmbeddingService
 from app.qdrant_client import store_embeddings
 from app.services.chunking import chunk_text
-from app.db.session import get_async_session
 from app.db.models import Document, DocumentStatus
-from app.db.session import sync_session
+from app.db.session import get_sync_session
+
 
 embedder = EmbeddingService()
 
@@ -18,7 +18,8 @@ def generate_embeddings_task(texts: list[str], user_id: str) -> str:
 
 @celery_app.task
 def process_document(document_id: str, filename: str, content: str, user_id: str):
-    with sync_session() as session:
+
+    with get_sync_session() as session:
         doc = session.get(Document, document_id) 
         if not doc:
             return

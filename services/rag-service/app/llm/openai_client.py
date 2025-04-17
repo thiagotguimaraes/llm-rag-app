@@ -1,6 +1,7 @@
 import os
 from dotenv import load_dotenv
 from openai import OpenAI
+from fastapi import HTTPException
 
 # Load environment variables. Assumes that project contains .env file with API keys
 load_dotenv()
@@ -13,15 +14,20 @@ client = OpenAI(
 )
 
 def gpt4o(messages: list[dict]):
-    response = client.chat.completions.create(
-        messages=messages,
-        model="gpt-4o", # https://github.com/marketplace/models
-        temperature=1,
-        max_tokens=4096,
-        top_p=1
-    )
-
-    return response
+    if not os.getenv("GITHUB_TOKEN"):
+        raise HTTPException(status_code=401, detail="GITHUB_TOKEN environment variable is not set")
+    
+    try:
+        response = client.chat.completions.create(
+            messages=messages,
+            model="gpt-4o", # https://github.com/marketplace/models
+            temperature=1,
+            max_tokens=4096,
+            top_p=1
+        )
+        return response
+    except Exception as e:
+        raise HTTPException(status_code=401, detail=f"Failed to authenticate with OpenAI Client: {str(e)}")
 
 def generate_answer(question: str, context_chunks: list[str]) -> str:
     context_text = "\n\n".join(context_chunks)
