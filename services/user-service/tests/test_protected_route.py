@@ -1,15 +1,18 @@
 from unittest.mock import patch, Mock
 import pytest
 
+
 # Required to mock create_async_engine
 @pytest.fixture(autouse=True)
 def mock_create_async_engine():
     with patch("sqlalchemy.ext.asyncio.create_async_engine") as mock_engine:
         yield mock_engine
 
+
 @pytest.mark.asyncio
 async def test_read_my_profile():
     from app.api.v1.routes.protected import read_my_profile
+
     # Mock the current user
     mock_user = Mock()
     mock_user.id = 1
@@ -22,9 +25,11 @@ async def test_read_my_profile():
     # Assertions
     assert result == {"id": 1, "email": "test@example.com", "role": "user"}
 
+
 @pytest.mark.asyncio
 async def test_admin_endpoint():
     from app.api.v1.routes.protected import admin_endpoint
+
     # Mock the admin user
     mock_user = Mock()
     mock_user.email = "admin@example.com"

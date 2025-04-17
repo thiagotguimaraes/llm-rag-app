@@ -15,32 +15,38 @@ load_dotenv()
 
 JWT_SECRET_KEY = os.getenv("JWT_SECRET_KEY")
 JWT_ALGORITHM = os.getenv("JWT_ALGORITHM")
-JWT_ACCESS_TOKEN_EXPIRE_MINUTES = int(os.getenv("JWT_ACCESS_TOKEN_EXPIRE_MINUTES", 15))
+JWT_ACCESS_TOKEN_EXPIRE_MINUTES = int(
+    os.getenv("JWT_ACCESS_TOKEN_EXPIRE_MINUTES", 15)
+)
 
 pwd_context = CryptContext(schemes=["bcrypt"], deprecated="auto")
-oauth2_scheme = OAuth2PasswordBearer(tokenUrl="token")  # not used directly, but required
+oauth2_scheme = OAuth2PasswordBearer(
+    tokenUrl="token"
+)  # not used directly, but required
+
 
 def hash_password(password: str) -> str:
     return pwd_context.hash(password)
 
+
 def verify_password(plain_password: str, hashed_password: str) -> bool:
     return pwd_context.verify(plain_password, hashed_password)
 
+
 def create_access_token(user: User, expires_delta: timedelta = None):
-    data = {
-        "sub": str(user.id),
-        "email": user.email,
-        "role": user.role
-    }
+    data = {"sub": str(user.id), "email": user.email, "role": user.role}
     to_encode = data.copy()
-    expire = datetime.utcnow() + (expires_delta or timedelta(minutes=JWT_ACCESS_TOKEN_EXPIRE_MINUTES))
+    expire = datetime.utcnow() + (
+        expires_delta or timedelta(minutes=JWT_ACCESS_TOKEN_EXPIRE_MINUTES)
+    )
     to_encode.update({"exp": expire})
     token = jwt.encode(to_encode, JWT_SECRET_KEY, algorithm=JWT_ALGORITHM)
     return token
 
+
 async def get_current_user(
     token: str = Depends(oauth2_scheme),
-    db: AsyncSession = Depends(get_async_session)
+    db: AsyncSession = Depends(get_async_session),
 ):
     credentials_exception = HTTPException(
         status_code=status.HTTP_401_UNAUTHORIZED,
@@ -62,9 +68,13 @@ async def get_current_user(
 
     return user
 
+
 def require_role(required_role: str):
     async def role_checker(user: User = Depends(get_current_user)):
         if user.role != required_role:
-            raise HTTPException(status_code=403, detail="Forbidden: insufficient role")
+            raise HTTPException(
+                status_code=403, detail="Forbidden: insufficient role"
+            )
         return user
+
     return role_checker
