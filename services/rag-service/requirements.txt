@@ -14,3 +14,7 @@ pytest
 pytest-asyncio
 pytest-cov
 psycopg2-binary
+black 
+isort 
+flake8 
+mypy
