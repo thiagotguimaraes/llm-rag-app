@@ -31,6 +31,8 @@ jobs:
           echo "DATABASE_HOST=localhost" >> services/user-service/.env
           echo "DATABASE_PORT=5432" >> services/user-service/.env
           echo "SERVER_PORT=8000" >> services/user-service/.env
+          echo "JWT_SECRET_KEY=${{ secrets.JWT_SECRET_KEY }}" >> services/user-service/.env
+          cat services/user-service/.env
 
       - name: Set environment variables
         run: |
@@ -41,6 +43,7 @@ jobs:
           echo "DATABASE_HOST=localhost" >> $GITHUB_ENV
           echo "DATABASE_PORT=5432" >> $GITHUB_ENV
           echo "SERVER_PORT=8000" >> $GITHUB_ENV
+          echo "JWT_SECRET_KEY=${{ secrets.JWT_SECRET_KEY }}" >> $GITHUB_ENV
 
       - name: Install Docker Compose
         run: |
