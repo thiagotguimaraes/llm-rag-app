@@ -5,14 +5,18 @@ from app.db.session import sync_session
 from sqlalchemy.sql import text
 from httpx._transports.asgi import ASGITransport
 from sqlalchemy.future import select
+from app.db.session import engine
+from app.db.base import Base
 from app.db.models.user import User
 
 
-@pytest.fixture(autouse=True)
-def clear_users_table():
-    with sync_session() as db_session:
-        db_session.execute(text("DELETE FROM users"))
-        db_session.commit()
+@pytest.fixture(scope="session", autouse=True)
+def setup_database():
+    # Create all tables
+    Base.metadata.create_all(bind=engine)
+    yield
+    # Drop all tables after tests
+    Base.metadata.drop_all(bind=engine)
 
 
 @pytest.mark.asyncio
