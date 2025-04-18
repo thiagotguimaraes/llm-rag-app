@@ -49,6 +49,11 @@ jobs:
       - name: Set environment variables
         run: |
           echo "DATABASE_URL=postgresql://postgres:postgres@user-db:5432/user_service" >> $GITHUB_ENV
+          echo "DATABASE_NAME=user_service" >> $GITHUB_ENV
+          echo "DATABASE_USER=postgres" >> $GITHUB_ENV
+          echo "DATABASE_PASSWORD=postgres" >> $GITHUB_ENV
+          echo "DATABASE_HOST=user-db" >> $GITHUB_ENV
+          echo "DATABASE_PORT=5432" >> $GITHUB_ENV
 
       # - name: Run code formatting check (black)
       #   run: |
