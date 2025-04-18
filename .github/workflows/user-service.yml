@@ -52,10 +52,15 @@ jobs:
           cd services/user-service
           docker-compose up -d
 
-      - name: Wait for Database
+      - name: Check Docker Compose
         run: |
           cd services/user-service
-          docker-compose exec user-db pg_isready -U postgres
+          docker ps
+
+      # - name: Wait for Database
+      #   run: |
+      #     cd services/user-service
+      #     docker-compose exec user-db pg_isready -U postgres
 
       - name: Set up Python
         uses: actions/setup-python@v4
