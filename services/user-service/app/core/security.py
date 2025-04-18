@@ -2,7 +2,7 @@ import os
 from datetime import datetime, timedelta
 
 from app.db.models.user import User
-from app.db.session import get_async_session
+from app.db.session import get_sync_session
 from dotenv import load_dotenv
 from fastapi import Depends, HTTPException, status
 from fastapi.security import OAuth2PasswordBearer
@@ -42,9 +42,9 @@ def create_access_token(user: User, expires_delta: timedelta = None):
     return token
 
 
-async def get_current_user(
+def get_current_user(
     token: str = Depends(oauth2_scheme),
-    db: AsyncSession = Depends(get_async_session),
+    db: AsyncSession = Depends(get_sync_session),
 ):
     credentials_exception = HTTPException(
         status_code=status.HTTP_401_UNAUTHORIZED,
@@ -59,7 +59,7 @@ async def get_current_user(
     except JWTError:
         raise credentials_exception
 
-    result = await db.execute(select(User).where(User.id == id))
+    result = db.execute(select(User).where(User.id == id))
     user = result.scalars().first()
     if user is None or not user.is_active:
         raise credentials_exception
@@ -68,7 +68,7 @@ async def get_current_user(
 
 
 def require_role(required_role: str):
-    async def role_checker(user: User = Depends(get_current_user)):
+    def role_checker(user: User = Depends(get_current_user)):
         if user.role != required_role:
             raise HTTPException(status_code=403, detail="Forbidden: insufficient role")
         return user

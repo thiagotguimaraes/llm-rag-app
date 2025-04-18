@@ -24,16 +24,16 @@ def mock_query_result(mock_user):
 
 
 @pytest.mark.asyncio
-@patch("app.core.security.get_async_session")
+@patch("app.core.security.get_sync_session")
 @patch("app.core.security.JWT_SECRET_KEY", "mock_secret_key")
 @patch("app.core.security.JWT_ALGORITHM", "mock_algorithm")
 @patch("app.core.security.jwt.decode")
-async def test_get_current_user_success(mock_jwt_decode, mock_get_async_session):
+async def test_get_current_user_success(mock_jwt_decode, mock_get_sync_session):
     from app.core.security import get_current_user
 
     # Mock database session
-    mock_db_session = AsyncMock()
-    mock_get_async_session.return_value = mock_db_session
+    mock_db_session = Mock()
+    mock_get_sync_session.return_value = mock_db_session
 
     # Mock user in database
     mock_user = User(id=1, email="test@example.com", role="user", is_active=True)
@@ -41,7 +41,7 @@ async def test_get_current_user_success(mock_jwt_decode, mock_get_async_session)
 
     # Call the function
     token = "mock_token"
-    result = await get_current_user(token=token, db=mock_db_session)
+    result = get_current_user(token=token, db=mock_db_session)
 
     # Assertions
     assert result == mock_user
@@ -52,21 +52,21 @@ async def test_get_current_user_success(mock_jwt_decode, mock_get_async_session)
 
 
 @pytest.mark.asyncio
-@patch("app.core.security.get_async_session")
+@patch("app.core.security.get_sync_session")
 @patch("app.core.security.jwt.decode")
-async def test_get_current_user_invalid_token(mock_jwt_decode, mock_get_async_session):
+async def test_get_current_user_invalid_token(mock_jwt_decode, mock_get_sync_session):
     from app.core.security import get_current_user
 
     # Mock JWT decode to raise an error
     mock_jwt_decode.side_effect = jwt.JWTError
 
     # Mock database session
-    mock_db_session = AsyncMock()
-    mock_get_async_session.return_value = mock_db_session
+    mock_db_session = Mock()
+    mock_get_sync_session.return_value = mock_db_session
 
     # Call the function and expect an exception
     with pytest.raises(HTTPException) as exc_info:
-        await get_current_user(token="invalid_token", db=mock_db_session)
+        get_current_user(token="invalid_token", db=mock_db_session)
 
     # Assertions
     assert exc_info.value.status_code == 401
@@ -134,7 +134,7 @@ async def test_require_role_success():
 
     # Call the function
     role_checker = require_role("admin")
-    result = await role_checker(user=mock_user)
+    result = role_checker(user=mock_user)
 
     # Assertions
     assert result == mock_user
@@ -150,7 +150,7 @@ async def test_require_role_forbidden():
     # Call the function and expect an exception
     role_checker = require_role("admin")
     with pytest.raises(HTTPException) as exc_info:
-        await role_checker(user=mock_user)
+        role_checker(user=mock_user)
 
     # Assertions
     assert exc_info.value.status_code == 403

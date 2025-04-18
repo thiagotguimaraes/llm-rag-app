@@ -1,7 +1,7 @@
 from app.core.security import (create_access_token, hash_password,
                                verify_password)
 from app.db.models.user import User
-from app.db.session import get_async_session
+from app.db.session import get_sync_session
 from app.schemas.user import TokenResponse, UserAuthRequest
 from fastapi import APIRouter, Depends, HTTPException
 from sqlalchemy.ext.asyncio import AsyncSession
@@ -11,12 +11,12 @@ router = APIRouter()
 
 
 @router.post("/register", response_model=TokenResponse)
-async def register(
-    user_in: UserAuthRequest, db: AsyncSession = Depends(get_async_session)
+def register(
+    user_in: UserAuthRequest, db: AsyncSession = Depends(get_sync_session)
 ):
     # Check if user exists
     existing_user = (
-        (await db.execute(select(User).where(User.email == user_in.email)))
+        (db.execute(select(User).where(User.email == user_in.email)))
         .scalars()
         .first()
     )
@@ -29,8 +29,8 @@ async def register(
         hashed_password=hash_password(user_in.password),
     )
     db.add(new_user)
-    await db.commit()
-    await db.refresh(new_user)
+    db.commit()
+    db.refresh(new_user)
 
     token = create_access_token(new_user)
 
@@ -38,11 +38,11 @@ async def register(
 
 
 @router.post("/login", response_model=TokenResponse)
-async def login(
-    user_in: UserAuthRequest, db: AsyncSession = Depends(get_async_session)
+def login(
+    user_in: UserAuthRequest, db: AsyncSession = Depends(get_sync_session)
 ):
     user = (
-        (await db.execute(select(User).where(User.email == user_in.email)))
+        (db.execute(select(User).where(User.email == user_in.email)))
         .scalars()
         .first()
     )

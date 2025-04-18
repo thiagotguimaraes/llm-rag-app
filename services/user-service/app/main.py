@@ -5,8 +5,8 @@ from fastapi import FastAPI
 
 
 async def lifespan(app: FastAPI):
-    async with engine.begin() as conn:
-        await conn.run_sync(Base.metadata.create_all)
+    with engine.begin() as conn:
+        Base.metadata.create_all(bind=conn)
     yield  # Lifespan continues after this point
 
 

@@ -38,18 +38,18 @@ def test_login_endpoint_registered():
 
 
 @pytest.mark.asyncio
-@patch("app.api.v1.routes.auth.get_async_session")
+@patch("app.api.v1.routes.auth.get_sync_session")
 @patch("app.api.v1.routes.auth.verify_password")
 @patch("app.api.v1.routes.auth.create_access_token")
 async def test_login_success(
-    mock_create_access_token, mock_verify_password, mock_get_async_session
+    mock_create_access_token, mock_verify_password, mock_get_sync_session
 ):
     # Import the router after everything is mocked
     from app.api.v1.routes.auth import login
 
     # Mock dependencies
-    mock_db_session = AsyncMock()
-    mock_get_async_session.return_value = mock_db_session
+    mock_db_session = Mock()
+    mock_get_sync_session.return_value = mock_db_session
     mock_verify_password.return_value = True
     mock_create_access_token.return_value = "mock_token"
 
@@ -61,7 +61,7 @@ async def test_login_success(
     user_in = UserAuthRequest(email="test@example.com", password="password123")
 
     # Call the function
-    result = await login(user_in, db=mock_db_session)
+    result = login(user_in, db=mock_db_session)
 
     # Assertions
     assert result.access_token == "mock_token"
@@ -70,15 +70,15 @@ async def test_login_success(
 
 
 @pytest.mark.asyncio
-@patch("app.api.v1.routes.auth.get_async_session")
+@patch("app.api.v1.routes.auth.get_sync_session")
 @patch("app.api.v1.routes.auth.verify_password")
-async def test_login_invalid_credentials(mock_verify_password, mock_get_async_session):
+async def test_login_invalid_credentials(mock_verify_password, mock_get_sync_session):
     # Import the router after everything is mocked
     from app.api.v1.routes.auth import login
 
     # Mock dependencies
-    mock_db_session = AsyncMock()
-    mock_get_async_session.return_value = mock_db_session
+    mock_db_session = Mock()
+    mock_get_sync_session.return_value = mock_db_session
     mock_verify_password.return_value = False
 
     # Mock database query for user
@@ -91,7 +91,7 @@ async def test_login_invalid_credentials(mock_verify_password, mock_get_async_se
 
     # Call the function and expect an exception
     with pytest.raises(HTTPException) as exc_info:
-        await login(user_in, db=mock_db_session)
+        login(user_in, db=mock_db_session)
 
     # Assertions
     assert exc_info.value.status_code == 401
@@ -100,14 +100,14 @@ async def test_login_invalid_credentials(mock_verify_password, mock_get_async_se
 
 
 @pytest.mark.asyncio
-@patch("app.api.v1.routes.auth.get_async_session")
-async def test_login_user_not_found(mock_get_async_session):
+@patch("app.api.v1.routes.auth.get_sync_session")
+async def test_login_user_not_found(mock_get_sync_session):
     # Import the router after everything is mocked
     from app.api.v1.routes.auth import login
 
     # Mock dependencies
-    mock_db_session = AsyncMock()
-    mock_get_async_session.return_value = mock_db_session
+    mock_db_session = Mock()
+    mock_get_sync_session.return_value = mock_db_session
 
     # Mock database query for user
     mock_db_session.execute.return_value = mock_query_result(mock_user=None)
@@ -117,7 +117,7 @@ async def test_login_user_not_found(mock_get_async_session):
 
     # Call the function and expect an exception
     with pytest.raises(HTTPException) as exc_info:
-        await login(user_in, db=mock_db_session)
+        login(user_in, db=mock_db_session)
 
     # Assertions
     assert exc_info.value.status_code == 401
@@ -140,18 +140,18 @@ def test_register_endpoint_registered():
 
 
 @pytest.mark.asyncio
-@patch("app.api.v1.routes.auth.get_async_session")
+@patch("app.api.v1.routes.auth.get_sync_session")
 @patch("app.api.v1.routes.auth.hash_password")
 @patch("app.api.v1.routes.auth.create_access_token")
 async def test_register_success(
-    mock_create_access_token, mock_hash_password, mock_get_async_session
+    mock_create_access_token, mock_hash_password, mock_get_sync_session
 ):
     # Import the router after everything is mocked
     from app.api.v1.routes.auth import register
 
     # Mock dependencies
-    mock_db_session = AsyncMock()
-    mock_get_async_session.return_value = mock_db_session
+    mock_db_session = Mock()
+    mock_get_sync_session.return_value = mock_db_session
     mock_hash_password.return_value = "hashed_password"
     mock_create_access_token.return_value = "mock_token"
 
@@ -162,7 +162,7 @@ async def test_register_success(
     user_in = UserAuthRequest(email="test@example.com", password="password123")
 
     # Call the function
-    result = await register(user_in, db=mock_db_session)
+    result = register(user_in, db=mock_db_session)
 
     # Assertions
     assert result.access_token == "mock_token"
@@ -174,14 +174,14 @@ async def test_register_success(
 
 
 @pytest.mark.asyncio
-@patch("app.api.v1.routes.auth.get_async_session")
-async def test_register_user_already_exists(mock_get_async_session):
+@patch("app.api.v1.routes.auth.get_sync_session")
+async def test_register_user_already_exists(mock_get_sync_session):
     # Import the router after everything is mocked
     from app.api.v1.routes.auth import register
 
     # Mock dependencies
-    mock_db_session = AsyncMock()
-    mock_get_async_session.return_value = mock_db_session
+    mock_db_session = Mock()
+    mock_get_sync_session.return_value = mock_db_session
 
     # Mock database query for existing user
     mock_user = User(email="test@example.com", hashed_password="hashed_password")
@@ -192,7 +192,7 @@ async def test_register_user_already_exists(mock_get_async_session):
 
     # Call the function and expect an exception
     with pytest.raises(HTTPException) as exc_info:
-        await register(user_in, db=mock_db_session)
+        register(user_in, db=mock_db_session)
 
     # Assertions
     assert exc_info.value.status_code == 400
