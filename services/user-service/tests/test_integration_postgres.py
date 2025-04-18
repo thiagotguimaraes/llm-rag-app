@@ -1,23 +1,18 @@
 import psycopg2
 import pytest
 from psycopg2 import OperationalError
+from app.config import db_connection_params
+
 
 @pytest.fixture
 def postgres_connection():
-    # Replace with your PostgreSQL connection details
-    connection_params = {
-        "dbname": "test_db",
-        "user": "test_user",
-        "password": "test_pass",
-        "host": "localhost",
-        "port": 5432,
-    }
     try:
-        connection = psycopg2.connect(**connection_params)
+        connection = psycopg2.connect(**db_connection_params)
         yield connection
     finally:
         if connection:
             connection.close()
+
 
 def test_postgres_health(postgres_connection):
     try:
