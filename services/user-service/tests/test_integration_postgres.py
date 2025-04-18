@@ -6,6 +6,7 @@ from app.config import db_connection_params
 
 @pytest.fixture
 def postgres_connection():
+    print("db_connection_params", db_connection_params)
     try:
         connection = psycopg2.connect(**db_connection_params)
         yield connection
