@@ -16,19 +16,19 @@ jobs:
       postgres:
         image: postgres:13
         env:
-          POSTGRES_USER: test_user
-          POSTGRES_PASSWORD: test_pass
-          POSTGRES_DB: test_db
+          POSTGRES_USER: postgres
+          POSTGRES_PASSWORD: postgres
+          POSTGRES_DB: user_service
         ports:
           - 5432:5432
         options: >-
-          --health-cmd="pg_isready -U test_user"
+          --health-cmd="pg_isready -U postgres"
           --health-interval=10s
           --health-timeout=5s
           --health-retries=5
 
     env:
-      DATABASE_URL: postgresql://test_user:test_pass@localhost:5432/test_db
+      DATABASE_URL: postgresql://postgres:postgres@user-db:5432/user_service
 
     steps:
       - name: Checkout code
@@ -48,7 +48,7 @@ jobs:
 
       - name: Set environment variables
         run: |
-          echo "DATABASE_URL=postgresql://test_user:test_pass@localhost:5432/test_db" >> $GITHUB_ENV
+          echo "DATABASE_URL=postgresql://postgres:postgres@user-db:5432/user_service" >> $GITHUB_ENV
 
       # - name: Run code formatting check (black)
       #   run: |
