@@ -24,21 +24,21 @@ jobs:
 
       - name: Create .env File
         run: |
-          echo "DATABASE_URL=postgresql://postgres:postgres@user-db:5432/user_service" > services/user-service/.env
+          echo "DATABASE_URL=postgresql+asyncpg//postgres:postgres@localhost:5432/user_service" > services/user-service/.env
           echo "DATABASE_NAME=user_service" >> services/user-service/.env
           echo "DATABASE_USER=postgres" >> services/user-service/.env
           echo "DATABASE_PASSWORD=postgres" >> services/user-service/.env
-          echo "DATABASE_HOST=user-db" >> services/user-service/.env
+          echo "DATABASE_HOST=localhost" >> services/user-service/.env
           echo "DATABASE_PORT=5432" >> services/user-service/.env
           echo "SERVER_PORT=8000" >> services/user-service/.env
 
       - name: Set environment variables
         run: |
-          echo "DATABASE_URL=postgresql://postgres:postgres@user-db:5432/user_service" >> $GITHUB_ENV
+          echo "DATABASE_URL=postgresql+asyncpg//postgres:postgres@localhost:5432/user_service" >> $GITHUB_ENV
           echo "DATABASE_NAME=user_service" >> $GITHUB_ENV
           echo "DATABASE_USER=postgres" >> $GITHUB_ENV
           echo "DATABASE_PASSWORD=postgres" >> $GITHUB_ENV
-          echo "DATABASE_HOST=user-db" >> $GITHUB_ENV
+          echo "DATABASE_HOST=localhost" >> $GITHUB_ENV
           echo "DATABASE_PORT=5432" >> $GITHUB_ENV
           echo "SERVER_PORT=8000" >> $GITHUB_ENV
 
