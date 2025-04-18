@@ -7,7 +7,10 @@ services:
     ports:
       - "${DATABASE_PORT}:${DATABASE_PORT}"
     environment:
-    - PGPORT=${DATABASE_PORT}
+      - PGPORT=${DATABASE_PORT}
+      - POSTGRES_USER=${DATABASE_USER:-postgres}
+      - POSTGRES_PASSWORD=${DATABASE_PASSWORD:-postgres}
+      - POSTGRES_DB=${DATABASE_NAME:-user_service}
     volumes:
       - user_db_data:/var/lib/postgresql/data
 
