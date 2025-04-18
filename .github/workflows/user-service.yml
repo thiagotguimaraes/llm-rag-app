@@ -19,8 +19,6 @@ jobs:
           POSTGRES_USER: postgres
           POSTGRES_PASSWORD: postgres
           POSTGRES_DB: user_service
-          POSTGRES_PORT: 5432
-          POSTGRES_HOST: user-db
         ports:
           - 5432:5432
         options: >-
@@ -28,6 +26,7 @@ jobs:
           --health-interval=10s
           --health-timeout=5s
           --health-retries=5
+          --add-host=user-db:127.0.0.1
 
     env:
       DATABASE_URL: postgresql://postgres:postgres@user-db:5432/user_service
