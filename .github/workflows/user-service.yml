@@ -19,6 +19,8 @@ jobs:
           POSTGRES_USER: postgres
           POSTGRES_PASSWORD: postgres
           POSTGRES_DB: user_service
+          POSTGRES_PORT: 5432
+          POSTGRES_HOST: user-db
         ports:
           - 5432:5432
         options: >-
