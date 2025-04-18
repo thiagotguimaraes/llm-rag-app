@@ -20,5 +20,6 @@ def test_postgres_health(postgres_connection):
         cursor.execute("SELECT 1;")
         result = cursor.fetchone()
         assert result == (1,), "Postgres health check failed"
+        assert True
     except OperationalError as e:
         pytest.fail(f"Postgres connection failed: {e}")
