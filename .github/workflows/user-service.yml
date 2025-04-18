@@ -14,28 +14,19 @@ jobs:
   test:
     runs-on: ubuntu-latest
 
-    services:
-      postgres:
-        image: postgres:13
-        env:
-          POSTGRES_USER: postgres
-          POSTGRES_PASSWORD: postgres
-          POSTGRES_DB: user_service
-        ports:
-          - 5432:5432
-        options: >-
-          --health-cmd="pg_isready -U postgres"
-          --health-interval=10s
-          --health-timeout=5s
-          --health-retries=5
-          --add-host=user-db:127.0.0.1
-
-    env:
-      DATABASE_URL: postgresql://postgres:postgres@user-db:5432/user_service
-
     steps:
       - name: Checkout code
         uses: actions/checkout@v3
+
+      - name: Set up Docker Compose
+        run: |
+          cd services/user-service
+          docker-compose up -d
+
+      - name: Wait for Database
+        run: |
+          cd services/user-service
+          docker-compose exec user-db pg_isready -U postgres
 
       - name: Set up Python
         uses: actions/setup-python@v4
@@ -49,14 +40,14 @@ jobs:
           pip install -r requirements.txt
           pip install -r requirements-dev.txt
 
-      - name: Set environment variables
-        run: |
-          echo "DATABASE_URL=postgresql://postgres:postgres@user-db:5432/user_service" >> $GITHUB_ENV
-          echo "DATABASE_NAME=user_service" >> $GITHUB_ENV
-          echo "DATABASE_USER=postgres" >> $GITHUB_ENV
-          echo "DATABASE_PASSWORD=postgres" >> $GITHUB_ENV
-          echo "DATABASE_HOST=user-db" >> $GITHUB_ENV
-          echo "DATABASE_PORT=5432" >> $GITHUB_ENV
+      # - name: Set environment variables
+      #   run: |
+      #     echo "DATABASE_URL=postgresql://postgres:postgres@user-db:5432/user_service" >> $GITHUB_ENV
+      #     echo "DATABASE_NAME=user_service" >> $GITHUB_ENV
+      #     echo "DATABASE_USER=postgres" >> $GITHUB_ENV
+      #     echo "DATABASE_PASSWORD=postgres" >> $GITHUB_ENV
+      #     echo "DATABASE_HOST=user-db" >> $GITHUB_ENV
+      #     echo "DATABASE_PORT=5432" >> $GITHUB_ENV
 
       # - name: Run code formatting check (black)
       #   run: |
@@ -83,3 +74,9 @@ jobs:
           cd services/user-service
           export PYTHONPATH=$(pwd)
           pytest --cov=. --cov-report=term-missing
+
+      - name: Tear down Docker Compose
+        if: always()
+        run: |
+          cd services/user-service
+          docker-compose down
