@@ -18,6 +18,16 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v3
 
+      - name: Set environment variables
+        run: |
+          echo "DATABASE_URL=postgresql://postgres:postgres@user-db:5432/user_service" >> $GITHUB_ENV
+          echo "DATABASE_NAME=user_service" >> $GITHUB_ENV
+          echo "DATABASE_USER=postgres" >> $GITHUB_ENV
+          echo "DATABASE_PASSWORD=postgres" >> $GITHUB_ENV
+          echo "DATABASE_HOST=user-db" >> $GITHUB_ENV
+          echo "DATABASE_PORT=5432" >> $GITHUB_ENV
+          echo "SERVER_PORT=8000" >> $GITHUB_ENV
+
       - name: Install Docker Compose
         run: |
           sudo apt-get update
@@ -44,15 +54,6 @@ jobs:
           pip install --upgrade pip
           pip install -r requirements.txt
           pip install -r requirements-dev.txt
-
-      # - name: Set environment variables
-      #   run: |
-      #     echo "DATABASE_URL=postgresql://postgres:postgres@user-db:5432/user_service" >> $GITHUB_ENV
-      #     echo "DATABASE_NAME=user_service" >> $GITHUB_ENV
-      #     echo "DATABASE_USER=postgres" >> $GITHUB_ENV
-      #     echo "DATABASE_PASSWORD=postgres" >> $GITHUB_ENV
-      #     echo "DATABASE_HOST=user-db" >> $GITHUB_ENV
-      #     echo "DATABASE_PORT=5432" >> $GITHUB_ENV
 
       # - name: Run code formatting check (black)
       #   run: |
